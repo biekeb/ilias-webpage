@@ -1,0 +1,138 @@
+body{
+    margin: 0;
+    background-color: #005779;
+    z-index: 0;
+}
+
+
+h1{
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    font-size: 3em;
+}
+
+h2{
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+p{
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20pt;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border: none;
+    border-radius: 50px;
+
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #005779;
+    border-radius: 50px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0095d0;
+  }
+  
+
+
+
+
+.cloud-div{
+    display: flex;
+    width: 100%;
+    justify-content: right;
+    z-index: -1;
+}
+
+.cloud-div img{
+    width: 20%;
+    border-radius: 20px;
+}
+
+.homepage{
+    width: 50%;
+    margin: 5%;
+    margin-top: 10%;
+}
+
+
+
+
+
+
+.start img{
+    width: 1000px;
+    height: 500px;
+    border-radius: 20px;
+
+}
+
+.mission{
+    height: 100vh;
+    display: flex;
+    margin-left: 5%;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+
+
+
+
+.info-div {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+  
+  .info-div p {
+    margin: 0 0 10px;
+  }
+  
+  .info-div button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .info-div button:hover {
+    background-color: #0056b3;
+  }
+  
+  .annotation {
+    cursor: pointer;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .annotation:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
