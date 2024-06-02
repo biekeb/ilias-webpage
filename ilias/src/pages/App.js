@@ -1,5 +1,7 @@
 import { PlaneScreen } from "../components/PlaneScreen";
-import { POIScreen } from "../components/POIScreen";
+
+
+// import { POIScreen } from "../components/POIScreen";
 
 function App() {
   return (
@@ -7,9 +9,9 @@ function App() {
       <div style={{ flex: 1, overflow: "hidden" }} className="PlaneScreen">
         <PlaneScreen />
       </div>
-      <div style={{ flex: 1, overflowY: "scroll" }} className="POIScreen">
+      {/* <div style={{ flex: 1, overflowY: "scroll" }} className="POIScreen">
         <POIScreen />
-      </div>
+      </div> */}
     </div>
   );
 }
