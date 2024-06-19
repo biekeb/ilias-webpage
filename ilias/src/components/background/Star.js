@@ -12,7 +12,7 @@ export class Star {
     constructor(ctx, layer) {
         var randomX = Math.floor((Math.random() * xMax) + 1);
         var randomY = Math.floor((Math.random() * yMax) + 1);
-        var randomSize = Math.floor((layer / 4) + .5);
+        var randomSize = Math.random()*.2 + .4
         var randomHue = Math.floor((Math.random() * 360) + 1);
         this.layer = layer
         this.x = randomX

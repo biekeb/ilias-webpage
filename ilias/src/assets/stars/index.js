@@ -8,6 +8,7 @@ import StarsImg7 from "./Stars 7.png"
 import StarsImg8 from "./Stars 8.png"
 import StarsImg9 from "./Stars 9.png"
 import StarsImg10 from "./Stars 10.png"
+import StarsFixedImg from "./StarsFixed.png"
 
 const Stars1 = new Image();
 Stars1.src = StarsImg1;
@@ -38,6 +39,8 @@ Stars9.src = StarsImg9;
 
 const Stars10 = new Image();
 Stars10.src = StarsImg10;
+export const StarsFixed = new Image();
+StarsFixed.src = StarsFixedImg;
 
 const starArray = [Stars1, Stars2, Stars3, Stars4, Stars5, Stars6, Stars7, Stars8, Stars9, Stars10];
 export default starArray

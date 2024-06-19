@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Dawn from "../../assets/dawn.jpg";
 import { Star } from "./Star";
+import { ForegroundImg } from "./ForegroundImg";
+import { StarsFixed } from "../../assets/stars";
+import { OLD_ForegroundCanvas } from "./Old_ForegroundCanvas";
 import { ForegroundCanvas } from "./ForegroundCanvas";
 
 const DawnImg = new Image();
@@ -39,7 +42,7 @@ export const BackgroundCanvas = ({ scrollRef }) => {
     const createStar = (ctx) => {
         const starsArr = []
         for (let i = 1; i <= 10; i++) {
-            starsArr.push(<ForegroundCanvas layer={i} scroll={scroll} />)
+            starsArr.push(<ForegroundImg layer={i} scroll={scroll} />)
         }
         setStarsComponent(starsArr);
     }
@@ -63,9 +66,12 @@ export const BackgroundCanvas = ({ scrollRef }) => {
 
     return (
         <>
-            <div id="HEEEEEYYYYY">
+            <div>
+                <div className="StarsFixed" style={{background:`url(${StarsFixed.src})`, height: "100vh", width: "100vw", position: "absolute", left: 0, top: 0, zIndex: -1 }} ></div>
                 <canvas height={vHeight} width={vWidth} style={{ height: "100vh", width: "100vw", position: "absolute", left: 0, top: 0, zIndex: -2 }} ref={canvasRef} />
                 {starsComponent}
+                <ForegroundCanvas scroll={scroll} />
+                {/* <OLD_ForegroundCanvas scroll={scroll} layer="1" /> */}
             </div>
         </>
     )
