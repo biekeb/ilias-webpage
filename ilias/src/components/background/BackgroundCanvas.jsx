@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import Dawn from "../../assets/dawn.jpg";
-import { Star } from "./Star";
+import Dawn from "../../assets/dawn2.png";
+import Blue from "../../assets/blue.png";
 import { ForegroundImg } from "./ForegroundImg";
 import { StarsFixed } from "../../assets/stars";
-import { OLD_ForegroundCanvas } from "./Old_ForegroundCanvas";
 import { ForegroundCanvas } from "./ForegroundCanvas";
 
 const DawnImg = new Image();
 DawnImg.src = Dawn;
+const BlueImg = new Image();
+BlueImg.src = Blue;
 export const BackgroundCanvas = ({ scrollRef }) => {
     const contrast = 1.4
     const brightness = .9
@@ -23,13 +24,17 @@ export const BackgroundCanvas = ({ scrollRef }) => {
         const contrastOffset = Math.max(1.4 - offset / 1000, 1);
         const brightnessOffset = Math.max(0.9 - offset / 5000, .75);
         const hue = Math.min(-150 + offset / 4, 150)
-        updatePicture(ctx, brightnessOffset, contrastOffset, hue)
+        const opacity = Math.max(1.4 - offset / 1000, 0);
+        updatePicture(ctx, brightnessOffset, contrastOffset, hue, opacity)
     }
 
-    const updatePicture = (ctx, brightness, contrast, hue) => {
+    const updatePicture = (ctx, brightness, contrast, hue, opacity) => {
         hue = hue > 0 ? hue : 0
+        ctx.filter = `opacity(${Math.max(opacity, 0)})`;
+        ctx?.drawImage(BlueImg, 0, 0, vWidth, vHeight);
         ctx.filter = `brightness(${brightness}) contrast(${contrast}) hue-rotate(${-hue}deg)`;
         ctx?.drawImage(DawnImg, 0, 0, vWidth, vHeight);
+
         ctx.filter = "";
     }
 
@@ -50,14 +55,17 @@ export const BackgroundCanvas = ({ scrollRef }) => {
     useEffect(() => {
         if (!canvasRef.current) return;
         const context = canvasRef.current.getContext("2d");
-        context.drawImage(DawnImg, 0, 0, vWidth, vHeight);
+        context.globalCompositeOperation = "screen"
         context.filter = '';
         createStar(context);
+        console.log("Animated !")
+
         animate(context);
     }, [canvasRef.current]);
 
     useEffect(() => {
         const scrollCount = (e) => {
+            console.log(e.target.scrollTop)
             scroll.current = e.target.scrollTop
         }
         setTimeout(() => document.querySelectorAll("canvas[data-engine*='three.js']+div")[0].addEventListener("scroll", scrollCount), 2000)
@@ -67,10 +75,14 @@ export const BackgroundCanvas = ({ scrollRef }) => {
     return (
         <>
             <div>
-                <div className="StarsFixed" style={{background:`url(${StarsFixed.src})`, height: "100vh", width: "100vw", position: "absolute", left: 0, top: 0, zIndex: -1 }} ></div>
+
                 <canvas height={vHeight} width={vWidth} style={{ height: "100vh", width: "100vw", position: "absolute", left: 0, top: 0, zIndex: -2 }} ref={canvasRef} />
+
+
+                <div className="StarsFixed" style={{ background: `url(${StarsFixed.src})`, height: "100vh", width: "100vw", position: "absolute", left: 0, top: 0, zIndex: -1 }} ></div>
                 {starsComponent}
                 <ForegroundCanvas scroll={scroll} />
+
                 {/* <OLD_ForegroundCanvas scroll={scroll} layer="1" /> */}
             </div>
         </>
