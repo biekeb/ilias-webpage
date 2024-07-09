@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { useFrame } from "react-three-fiber";
 
 export default function F16() {
-  const f16 = useGLTF("./assets/f16.glb");
+  const f16 = useGLTF("./assets/f35.glb");
   const plane = useRef();
   const scroll = useScroll();
   const tl = useRef();
@@ -20,8 +20,12 @@ export default function F16() {
     });
 
     tl.current
+      .to(plane.current.position, { y: -5 }, 0)
+
       .to(plane.current.rotation, { y: Math.PI / -2 }, 1)
       .to(plane.current.position, { x: 2 }, 1)
+      .to(plane.current.position, { y: 0 }, 3)
+
       .to(plane.current.position, { x: -2 }, 6)
       .to(plane.current.position, { x: 0 }, 20);
   }, []);
@@ -50,7 +54,7 @@ export default function F16() {
       ref={plane}
       object={f16.scene}
       rotation={[5, Math.PI / -2, Math.PI / -2]}
-      position={[0, 0, -2]}
+      position={[0, -5, -2]}
       scale={[0.05, 0.05, 0.05]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}

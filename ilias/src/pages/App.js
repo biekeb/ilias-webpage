@@ -1,17 +1,18 @@
-import { PlaneScreen } from "../components/PlaneScreen";
+import { Plane } from "@react-three/drei";
+import { PlaneScreen } from "./PlaneScreen";
+import { Test } from "./Test";
 
-
-// import { POIScreen } from "../components/POIScreen";
 
 function App() {
   return (
-    <div className="App" style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <div className="App">
       <div style={{ flex: 1, overflow: "hidden" }} className="PlaneScreen">
         <PlaneScreen />
       </div>
-      {/* <div style={{ flex: 1, overflowY: "scroll" }} className="POIScreen">
+      {/* <div style={{ flex: 1, overflow: "hidden" }} className="Test">
         <POIScreen />
-      </div> */}
+        </div> */}
+
     </div>
   );
 }
