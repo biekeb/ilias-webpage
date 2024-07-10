@@ -36,7 +36,7 @@ export default function F16() {
 
       .to(plane.current.position, { x: -10 }, 14)
 
-      .to(plane.current.position, { x: 0 }, 20);
+      .to(plane.current.position, { x: -15 }, 20);
   }, []);
 
   useEffect(() => {

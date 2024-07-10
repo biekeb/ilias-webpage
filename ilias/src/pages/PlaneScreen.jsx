@@ -6,7 +6,6 @@ import {
   ScrollControls,
   Clouds,
   Cloud,
-  Html,
 } from "@react-three/drei";
 import * as THREE from "three";
 import F16 from "../components/3D/f16";
@@ -16,12 +15,15 @@ import { framerMotionConfig } from "./config";
 import { MotionConfig } from "framer-motion";
 import { BackgroundCanvas } from "../components/background/BackgroundCanvas";
 import AxesHelper from "./AxesHelper";
-import ParticleText from "./Test";
+import { useGLTF } from "@react-three/drei";
+
+const spaceshipURL =
+  "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/low-poly-spaceship/model.gltf";
 
 export const PlaneScreen = () => {
   const [section, setSection] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [shape, setShape] = useState("torusKnot"); // Track the current shape
+  const [blendFactor, setBlendFactor] = useState(0);
   const scene = new THREE.Scene();
 
   const parameters = {
@@ -63,11 +65,14 @@ export const PlaneScreen = () => {
     };
   }, []);
 
+  // This is where you place the updated useEffect block
   useEffect(() => {
-    if (offset >= 4000) {
-      setShape("sphere");
+    if (offset >= 5000) {
+      setBlendFactor(1);
+    } else if (offset >= 4000) {
+      setBlendFactor((offset - 4000) / 1000);
     } else {
-      setShape("torusKnot");
+      setBlendFactor(0);
     }
   }, [offset]);
 
@@ -103,8 +108,7 @@ export const PlaneScreen = () => {
           <ambientLight intensity={3} />
 
           {/* Particles */}
-          <Particles parameters={parameters} offset={offset} />
-          {shape === "torusKnot" ? <ParticleTorusKnot /> : <ParticleSphere />}
+          <MorphingParticles blendFactor={blendFactor} offset={offset} />
 
           <ScrollControls pages={7} damping={0.1}>
             <Scroll>
@@ -128,6 +132,8 @@ export const PlaneScreen = () => {
             </Scroll>
           </ScrollControls>
 
+          {/* <Particles parameters={parameters} offset={offset} /> */}
+
           <AxesHelper size={5} />
         </Canvas>
       </MotionConfig>
@@ -140,92 +146,124 @@ export const PlaneScreen = () => {
         <Button2 onClick={handleButtonClick} />
       )}
       {isModalOpen && <Modal onClose={handleCloseModal} />}
+
+      {offset >= 3500 && offset < 4500 && (
+        <Button3 onClick={handleButtonClick} />
+      )}
+      {isModalOpen && <Modal onClose={handleCloseModal} />}
+
+      {offset >= 3500 && offset < 4500 && (
+        <Button4 onClick={handleButtonClick} />
+      )}
+      {isModalOpen && <Modal onClose={handleCloseModal} />}
     </>
   );
 };
 
-const ParticleTorusKnot = () => {
-  const torusKnotGeometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-  const particlesCount = torusKnotGeometry.attributes.position.count;
-  const positions = new Float32Array(particlesCount * 3);
-
-  // Extract the positions from the TorusKnot geometry
-  for (let i = 0; i < particlesCount; i++) {
-    positions[i * 3] = torusKnotGeometry.attributes.position.getX(i);
-    positions[i * 3 + 1] = torusKnotGeometry.attributes.position.getY(i);
-    positions[i * 3 + 2] = torusKnotGeometry.attributes.position.getZ(i);
-  }
-
-  const particlesGeometry = new THREE.BufferGeometry();
-  particlesGeometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(positions, 3)
-  );
-
-  const particlesMaterial = new THREE.PointsMaterial({
-    color: "#ff0000",
-    sizeAttenuation: true,
-    size: 0.03,
-  });
-
-  return <points geometry={particlesGeometry} material={particlesMaterial} />;
-};
-
-const ParticleSphere = () => {
-  const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
-  const particlesCount = sphereGeometry.attributes.position.count;
-  const positions = new Float32Array(particlesCount * 3);
-
-  // Extract the positions from the Sphere geometry
-  for (let i = 0; i < particlesCount; i++) {
-    positions[i * 3] = sphereGeometry.attributes.position.getX(i);
-    positions[i * 3 + 1] = sphereGeometry.attributes.position.getY(i);
-    positions[i * 3 + 2] = sphereGeometry.attributes.position.getZ(i);
-  }
-
-  const particlesGeometry = new THREE.BufferGeometry();
-  particlesGeometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(positions, 3)
-  );
-
-  const particlesMaterial = new THREE.PointsMaterial({
-    color: "#00ff00",
-    sizeAttenuation: true,
-    size: 0.03,
-  });
-
-  return <points geometry={particlesGeometry} material={particlesMaterial} />;
-};
-
-const Particles = ({ parameters, offset }) => {
-  const particlesCount = 200;
-  const positions = new Float32Array(particlesCount * 3);
-
-  for (let i = 0; i < particlesCount; i++) {
-    positions[i * 3 + 0] = -2 + Math.random(); // Random value between -1 and 0
-    positions[i * 3 + 1] = Math.random(); // Random value between 0 and 1
-    positions[i * 3 + 2] = Math.random(); // Random value between 0 and 1
-  }
-
-  const particlesGeometry = new THREE.BufferGeometry();
-  particlesGeometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(positions, 3)
-  );
-
-  const particlesMaterial = new THREE.PointsMaterial({
-    color: parameters.materialColor,
-    sizeAttenuation: true,
-    size: 0.03,
-  });
-
+const MorphingParticles = ({ blendFactor, offset }) => {
   const particlesRef = useRef();
+  const torusKnotGeometry1 = new THREE.SphereGeometry(1, 32, 32);
+  const torusKnotGeometry2 = new THREE.SphereGeometry(1, 32, 32);
+  const sphereGeometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
 
-  // Update particles position based on offset
+  const particlesCount = Math.min(
+    torusKnotGeometry1.attributes.position.count,
+    torusKnotGeometry2.attributes.position.count,
+    sphereGeometry.attributes.position.count
+  );
+
+  const initialRandomPositions = useRef(new Float32Array(particlesCount * 3));
+  const positions = new Float32Array(particlesCount * 3);
+
+  // Generate initial random positions for the particles
+  useEffect(() => {
+    for (let i = 0; i < particlesCount; i++) {
+      initialRandomPositions.current[i * 3] = (Math.random() - 0.5) * 10;
+      initialRandomPositions.current[i * 3 + 1] = (Math.random() - 0.5) * 10;
+      initialRandomPositions.current[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    }
+  }, [particlesCount]);
+
+  // Interpolate between random positions, TorusKnot, and Sphere positions
+  for (let i = 0; i < particlesCount; i++) {
+    const randomPosition = new THREE.Vector3(
+      initialRandomPositions.current[i * 3],
+      initialRandomPositions.current[i * 3 + 1],
+      initialRandomPositions.current[i * 3 + 2]
+    );
+
+    const torusPosition1 = new THREE.Vector3(
+      torusKnotGeometry1.attributes.position.getX(i) - 2,
+      torusKnotGeometry1.attributes.position.getY(i),
+      torusKnotGeometry1.attributes.position.getZ(i)
+    );
+
+    const torusPosition2 = new THREE.Vector3(
+      torusKnotGeometry2.attributes.position.getX(i) + 2,
+      torusKnotGeometry2.attributes.position.getY(i),
+      torusKnotGeometry2.attributes.position.getZ(i)
+    );
+
+    const spherePosition = new THREE.Vector3(
+      sphereGeometry.attributes.position.getX(i) + 3,
+      sphereGeometry.attributes.position.getY(i),
+      sphereGeometry.attributes.position.getZ(i)
+    );
+
+    let blendedPosition = new THREE.Vector3();
+    if (offset < 2100) {
+      // From offset 0 to 2100, use random positions
+      blendedPosition = randomPosition;
+    } else if (offset < 3300) {
+      // From offset 2100 to 3300, transition from random positions to torus knots
+      // Calculate the blend factor 't' based on the current offset
+      const t = (offset - 2100) / 1200;
+      // Interpolate between random positions and torus knot positions
+      blendedPosition = new THREE.Vector3().lerpVectors(
+        randomPosition,
+        i % 2 === 0 ? torusPosition1 : torusPosition2,
+        t
+      );
+    } else if (offset < 4800) {
+      // From offset 3300 to 4800, stay at the torus knot positions
+      blendedPosition = i % 2 === 0 ? torusPosition1 : torusPosition2;
+    } else if (offset < 5000) {
+      // From offset 4800 to 5000, transition from torus knots to sphere
+      // Calculate the blend factor 't' based on the current offset
+      const t = (offset - 4800) / 200;
+      // Interpolate between torus knot positions and sphere position
+      const intermediateTorusPosition =
+        i % 2 === 0 ? torusPosition1 : torusPosition2;
+      blendedPosition = new THREE.Vector3().lerpVectors(
+        intermediateTorusPosition,
+        spherePosition,
+        t
+      );
+    } else {
+      // After offset 5000, use sphere positions
+      blendedPosition = spherePosition;
+    }
+
+    positions[i * 3] = blendedPosition.x;
+    positions[i * 3 + 1] = blendedPosition.y;
+    positions[i * 3 + 2] = blendedPosition.z;
+  }
+
+  const particlesGeometry = new THREE.BufferGeometry();
+  particlesGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(positions, 3)
+  );
+
+  const particlesMaterial = new THREE.PointsMaterial({
+    color: "#ffffff",
+    sizeAttenuation: true,
+    size: 0.03,
+  });
+
   useFrame(() => {
     if (particlesRef.current) {
-      particlesRef.current.position.x = offset >= 3000 ? 0 : -10;
+      particlesRef.current.position.x = offset >= 2000 ? 0 : -10; // Start the offset effect earlier
     }
   });
 
@@ -287,4 +325,18 @@ const Button2 = ({ onClick }) => {
   );
 };
 
-export default PlaneScreen;
+const Button3 = ({ onClick }) => {
+  return (
+    <div className="gif-button2">
+      <button onClick={onClick}>Ilias</button>
+    </div>
+  );
+};
+
+const Button4 = ({ onClick }) => {
+  return (
+    <div className="gif-button">
+      <button onClick={onClick}>alias</button>
+    </div>
+  );
+};

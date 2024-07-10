@@ -343,7 +343,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #111;
+  /* background-color: #111; */
   color: #fff;
   padding: 20px;
   height: 100vh;
