@@ -10,6 +10,7 @@ import React, { useRef, useEffect } from "react";
 import { Points, PointMaterial } from "@react-three/drei";
 import { useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
+import { useState } from "react";
 
 const Section = (props) => {
   const { children } = props;

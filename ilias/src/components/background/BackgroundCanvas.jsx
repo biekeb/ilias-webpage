@@ -21,7 +21,7 @@ export const BackgroundCanvas = ({ scrollRef }) => {
   const vHeight = window.screen.availHeight;
   const [offset, setOffset] = useState(0);
   const getFilters = () => {
-    console.log(offset);
+    // console.log(offset);
     if (offset < 50)
       return {
         brightnessTop: 1.5,
