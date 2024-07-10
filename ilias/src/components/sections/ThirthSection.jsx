@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import ScrollMagic from "scrollmagic";
 import "particles.js";
 import { useEffect } from "react";
+import ParticleText from "../../pages/Test";
 
 function ThirtSection() {
   return (

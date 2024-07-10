@@ -3,18 +3,8 @@ import { animated, useSpring } from "@react-spring/web";
 import logo from "../../styling/images/iliaslogo.png";
 
 export const Start = () => {
-  const springs = useSpring({
-    from: { y: -100 },
-    to: { y: 100 },
-  });
-
   return (
-    <animated.div
-      style={{
-        ...springs,
-      }}
-      className="start"
-    >
+    <animated.div style={{}} className="start">
       <img src={logo} alt="" />
       <h1 id="start-h1">
         FLY HIGH,

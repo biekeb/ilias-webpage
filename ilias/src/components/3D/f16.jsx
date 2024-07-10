@@ -20,13 +20,22 @@ export default function F16() {
     });
 
     tl.current
-      .to(plane.current.position, { y: -5 }, 0)
+      .to(plane.current.position, { y: 0 }, 0)
+      .to(plane.current.position, { x: 0 }, 0)
+      .to(plane.current.position, { z: -14 }, 0)
 
       .to(plane.current.rotation, { y: Math.PI / -2 }, 1)
-      .to(plane.current.position, { x: 2 }, 1)
+      .to(plane.current.position, { z: 0 }, 1)
+
+      .to(plane.current.position, { x: 0 }, 1)
       .to(plane.current.position, { y: 0 }, 3)
 
       .to(plane.current.position, { x: -2 }, 6)
+
+      .to(plane.current.position, { x: 2 }, 9)
+
+      .to(plane.current.position, { x: -10 }, 14)
+
       .to(plane.current.position, { x: 0 }, 20);
   }, []);
 
@@ -53,8 +62,8 @@ export default function F16() {
       dispose={null}
       ref={plane}
       object={f16.scene}
-      rotation={[5, Math.PI / -2, Math.PI / -2]}
-      position={[0, -5, -2]}
+      rotation={[0, Math.pi, 0]}
+      position={[-15, -5, -2]}
       scale={[0.05, 0.05, 0.05]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}

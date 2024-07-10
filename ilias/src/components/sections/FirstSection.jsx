@@ -2,15 +2,10 @@ import React from "react";
 import { animated, useSpring } from "@react-spring/web";
 
 export const FirstSection = () => {
-  const springs = useSpring({
-    from: { y: -100 },
-    to: { y: 100 },
-  });
 
   return (
     <animated.div
       style={{
-        ...springs,
       }}
       className="fs"
     >

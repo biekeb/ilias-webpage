@@ -15,6 +15,9 @@ import { framerMotionConfig } from "./config";
 import { MotionConfig } from "framer-motion";
 import { Experience } from "./Expierence";
 import { BackgroundCanvas } from "../components/background/BackgroundCanvas";
+import AxesHelper from "./AxesHelper";
+import ParticleCanvas from "../components/ParticlesModel";
+import ParticleText from "./Test";
 
 export const PlaneScreen = () => {
   const [section, setSection] = useState(0);
@@ -41,11 +44,16 @@ export const PlaneScreen = () => {
             castShadow
           />
           <ambientLight intensity={3} />
-
           <ScrollControls pages={7} damping={0.1}>
-            <ScrollManager section={section} onSectionChange={setSection} />
+            {/* <ScrollManager section={section} onSectionChange={setSection} /> */}
 
-            <Scroll></Scroll>
+            <Scroll>
+              <Clouds material={THREE.MeshLambertMaterial} limit={400}>
+                <Cloud position={[-4, -2, 0]} speed={0.2} opacity={0.5} />
+                <Cloud position={[4, -2, 0]} speed={0.2} opacity={0.5} />
+                <Cloud position={[0, 0, 0]} speed={0.2} opacity={0.5} />
+              </Clouds>
+            </Scroll>
             <Float
               speed={0.5}
               rotationIntensity={0.5}
@@ -59,6 +67,7 @@ export const PlaneScreen = () => {
               <Interface />
             </Scroll>
           </ScrollControls>
+          <AxesHelper size={5} />
         </Canvas>
       </MotionConfig>
     </>

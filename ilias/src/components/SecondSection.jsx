@@ -3,18 +3,8 @@ import { animated, useSpring } from "@react-spring/web";
 import logo from "../styling/images/iliaslogo.png";
 
 export const SecondSection = () => {
-  const springs = useSpring({
-    from: { y: -100 },
-    to: { y: 100 },
-  });
-
   return (
-    <animated.div
-      style={{
-        ...springs,
-      }}
-      className="ss"
-    >
+    <animated.div style={{}} className="ss">
       <div className="ss-text">
         <div>
           <h2 id="title-span">Plan, Schedule & Control</h2>

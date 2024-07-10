@@ -5,6 +5,11 @@ import { Start } from "../components/sections/Start";
 import { FirstSection } from "../components/sections/FirstSection";
 import { SecondSection } from "../components/SecondSection";
 import ThirtSection from "../components/sections/ThirthSection";
+import ParticleText from "./Test";
+import React, { useRef, useEffect } from "react";
+import { Points, PointMaterial } from "@react-three/drei";
+import { useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
 
 const Section = (props) => {
   const { children } = props;
@@ -41,6 +46,17 @@ export const Interface = () => {
       <First />
       <Second />
       <Thirth />
+      {/* <ParticleText /> */}
+      <div
+        style={{
+          position: "absolute",
+          height: "100vh",
+          border: "1px solid red",
+          zIndex: 1000,
+        }}
+      >
+        <Particles />
+      </div>
       <ContactSection />
     </div>
   );
@@ -101,3 +117,32 @@ const ContactSection = () => {
     </Section>
   );
 };
+
+function Particles() {
+  const particleCount = 5000;
+  const particlesRef = useRef();
+
+  const particles = useMemo(() => {
+    const positions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 10;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    }
+    return positions;
+  }, [particleCount]);
+
+  return (
+    <points ref={particlesRef}>
+      <bufferGeometry attach="geometry">
+        <bufferAttribute
+          attachObject={["attributes", "position"]}
+          array={particles}
+          count={particleCount}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial attach="material" color="white" size={0.05} />
+    </points>
+  );
+}
