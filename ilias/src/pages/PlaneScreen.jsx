@@ -17,6 +17,7 @@ import { MotionConfig } from "framer-motion";
 import { BackgroundCanvas } from "../components/background/BackgroundCanvas";
 import AxesHelper from "./AxesHelper";
 import { useGLTF } from "@react-three/drei";
+import { RotatingSphere } from "../components/RotatingSphere/RotatingSphere"
 
 
 const CloudsWithScroll = () => {
@@ -131,10 +132,11 @@ export const PlaneScreen = () => {
           <ambientLight intensity={3} />
 
           {/* Particles */}
-          <MorphingParticles />
+          {/* <MorphingParticles /> */}
 
           <ScrollControls pages={7} damping={0.1}>
             {/* <CloudsWithScroll /> */}
+            <RotatingSphere />
 
             <Float
               speed={0.5}
@@ -188,9 +190,9 @@ const MorphingParticles = () => {
     sphereGeometry.attributes.position.count
   );
 
-  const initialRandomPositions = useRef(new Float32Array(particlesCount * 3));
   const positions = new Float32Array(particlesCount * 3);
   const positionsFunnel = new Float32Array(particlesCount * 3);
+  const initialRandomPositions = useRef(new Float32Array(particlesCount * 3));
 
   // Generate initial random positions for the particles
   useEffect(() => {
@@ -208,7 +210,7 @@ const MorphingParticles = () => {
       const theta = (i / particlesCount) * Math.PI * 2;
       const radius = (particlesCount - i) / particlesCount * 2;
       const x = torusKnotGeometry2.attributes.position.getX(i)
-      const y =  torusKnotGeometry1.attributes.position.getY(Math.round(particlesCount/2.3)); // Funnel height
+      const y = torusKnotGeometry1.attributes.position.getY(Math.round(particlesCount / 2.3)); // Funnel height
       const z = radius * Math.sin(theta);
 
       positions[i * 3] = x;
@@ -305,16 +307,16 @@ const MorphingParticles = () => {
 
   return (
     <>
-    <points
-      ref={particlesRef}
-      geometry={particlesGeometry}
-      material={particlesMaterial}
-    />
-    <points
-      ref={particlesRef}
-      geometry={particlesGeometryFunnel}
-      material={particlesMaterial}
-    />
+      <points
+        ref={particlesRef}
+        geometry={particlesGeometry}
+        material={particlesMaterial}
+      />
+      <points
+        ref={particlesRef}
+        geometry={particlesGeometryFunnel}
+        material={particlesMaterial}
+      />
     </>
   );
 };
