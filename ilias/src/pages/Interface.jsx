@@ -52,7 +52,6 @@ export const Interface = () => {
         style={{
           position: "absolute",
           height: "100vh",
-          border: "1px solid red",
           zIndex: 1000,
         }}
       >

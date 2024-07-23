@@ -11,15 +11,7 @@ function ThirtSection() {
       <div className="header">
         A SEAMLESS INTEGRATION, FOR A HOLISTIC FLEET MANAGEMENT
       </div>
-      <div className="main">
-        <div className="circle">
-          <span className="text">ILIAS</span>
-        </div>
-        <div className="connector"></div>
-        <div className="circle">
-          <span className="text">ALIS</span>
-        </div>
-      </div>
+     
       <div className="footer">
         <ul>
           <li>Interfacing with ALIS/ODIN</li>

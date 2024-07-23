@@ -152,7 +152,7 @@ export const PlaneScreen = () => {
             </Scroll>
           </ScrollControls>
 
-          <AxesHelper size={5} />
+          {/* <AxesHelper size={5} /> */}
         </Canvas>
       </MotionConfig>
       {/* {offset >= 1500 && offset < 1900 && (

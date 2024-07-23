@@ -24,7 +24,8 @@ export default function F16() {
         .to(plane.current.position, { x: 5, y: -4, duration: 200 }, 1)
         .to(plane.current.rotation, { y: Math.PI / -1.5, duration: 40, delay: .8 }, 1)
     else
-      return 4
+      return tl.current
+        .to(plane.current.position, { x: 10, y: 5, duration: 500 }, 1)
   };
 
   useFrame((state, delta) => {
