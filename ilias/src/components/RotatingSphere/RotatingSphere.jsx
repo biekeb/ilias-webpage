@@ -175,13 +175,16 @@ export const RotatingSphere = () => {
         framecount.current += 1
         // }
         if (scroll.offset > .45) {
-            if (particlesMaterial.opacity < 1) particlesMaterial.opacity += .001
+            if (particlesMaterial.opacity < 1) particlesMaterial.opacity = Math.min(particlesMaterial.opacity+.001,1)
             else particlesMaterial.transparent = false
         } else {
             particlesMaterial.opacity = Math.max(particlesMaterial.opacity-.001,0)
         }
         if (scroll.offset > .7) {
-            particlesRef.current.userData.spriteMaterial.forEach(s => s.opacity += .01);
+            particlesRef.current.userData.spriteMaterial.forEach(s => s.opacity = Math.min(s.opacity+.01, 1));
+        } else {
+            particlesRef.current.userData.spriteMaterial.forEach(s => s.opacity = Math.max(s.opacity-.01, 0));
+
         }
         positionsAttr.needsUpdate = true;
     });
